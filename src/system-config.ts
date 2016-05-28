@@ -3,12 +3,37 @@
  **********************************************************************************************/
 /** Map relative paths to URLs. */
 const map: any = {
+  'firebase': 'vendor/firebase/lib/firebase-web.js',
+  'angularfire2': 'vendor/angularfire2',
+  '@angular2-material': 'vendor/@angular2-material'
 };
 
 /** User packages configuration. */
 const packages: any = {
+  angularfire2: {
+    defaultExtension: 'js',
+    main: 'angularfire2.js'
+  }
 };
 
+const materialPkgs:string[] = [
+  'core',
+  'toolbar',
+  'icon',
+  'button',
+  'sidenav',
+  'list',
+  'card',
+  'input',
+  'radio',
+  'checkbox',
+  'grid-list',
+  'tabs'
+];
+
+materialPkgs.forEach((pkg) => {
+  packages[`@angular2-material/${pkg}`] = {main: `${pkg}.js`};
+});
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /***********************************************************************************************
  * Everything underneath this line is managed by the CLI.
