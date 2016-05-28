@@ -11,7 +11,7 @@ if (environment.production) {
 bootstrap(KeepthingsAppComponent,
   [
     FIREBASE_PROVIDERS,
-    defaultFirebase('https://keepthings.firebaseio.com'),// can change to your firebase project url
+    defaultFirebase('https://keepthings.firebaseio.com'),
     HTTP_PROVIDERS
   ]);
 

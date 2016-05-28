@@ -13,7 +13,7 @@ module.exports = function (defaults) {
       'rxjs/**/*.+(js|js.map)',
       '@angular/**/*.+(js|js.map)',
       '@angular2-material/**/*',
-      'angularfire2/**/*.js',
+      'angularfire2/**/*.+(js|js.map)',
       'firebase/lib/*.js'
     ]
   });
