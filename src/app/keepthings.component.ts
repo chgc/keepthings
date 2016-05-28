@@ -56,11 +56,16 @@ export class KeepthingsAppComponent {
   ];
   constructor(af: AngularFire, private builder: FormBuilder) {
     this.items = af.database.list('/items');
-    this.regForm = builder.group({
+
+  }
+  
+  create() {
+    this.regForm = this.builder.group({
       newData: new Control('')
     });
+    this.formShowing = true;
   }
-
+  
   save() {
     if (this.currentItem) {
       // update

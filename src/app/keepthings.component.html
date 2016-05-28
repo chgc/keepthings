@@ -12,7 +12,7 @@
     <button md-icon-button (click)="sidenav.open()">
       <md-icon>menu</md-icon>
     </button> {{title}}
-    <button md-fab (click)="formShowing=!formShowing">
+    <button md-fab (click)="create()">
       <md-icon>add</md-icon>
     </button>
   </md-toolbar>
@@ -25,6 +25,7 @@
           <md-input placeholder="data" ngControl="newData"></md-input>
         </md-card-content>
         <md-card-actions align="end">
+          <button type="button" color="primary" md-raised-button (click)="formShowing=false">Cancel</button>
           <button type="submit" md-raised-button color="accent">POST</button>
         </md-card-actions>
       </form>
