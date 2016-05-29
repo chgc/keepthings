@@ -80,6 +80,7 @@ export class KeepthingsAppComponent {
       })
       .catch((err) => {
         console.log(err);
+        alert('登入失敗!');
         this.isLogin = false;
       });
   }
