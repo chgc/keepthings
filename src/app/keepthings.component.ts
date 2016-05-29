@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FORM_DIRECTIVES, ControlGroup, FormBuilder, Control } from '@angular/common';
+import { FORM_DIRECTIVES, ControlGroup, FormBuilder, Control, Validators } from '@angular/common';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import {MdToolbar} from '@angular2-material/toolbar';
 import {MdButton} from '@angular2-material/button';
@@ -39,7 +39,10 @@ export class KeepthingsAppComponent {
   formShowing = false;
   title = 'keepthings!';
   regForm: ControlGroup;
+  loginForm: ControlGroup;
   currentItem: any;
+  isLogin: boolean = false;
+  loginUser: string = '';
 
   items: FirebaseListObservable<any[]>;
   views: Object[] = [
@@ -54,29 +57,59 @@ export class KeepthingsAppComponent {
       icon: "pets"
     }
   ];
-  constructor(af: AngularFire, private builder: FormBuilder) {
-    this.items = af.database.list('/items');
+  constructor(private af: AngularFire, private builder: FormBuilder) {
+    // 
+    this.loginForm = this.builder.group({
+      email: new Control('', Validators.required),
+      password: new Control('', Validators.required)
 
+    })
   }
-  
+
+  login() {
+    this.af.auth.login(this.loginForm.value)
+      .then((data) => {
+        console.log('login: ', data);
+        this.loginUser = data.uid;
+        this.items = this.af.database.list('/users/' + this.loginUser);
+        this.isLogin = true;
+        this.loginForm = this.builder.group({
+          email: new Control('', Validators.required),
+          password: new Control('', Validators.required)
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.isLogin = false;
+      });
+  }
+
+  logout() {
+    this.af.auth.logout();
+    this.loginUser = "";
+    this.isLogin = false;
+  }
+
   create() {
     this.regForm = this.builder.group({
       newData: new Control('')
     });
     this.formShowing = true;
   }
-  
+
   save() {
+    let promise;
     if (this.currentItem) {
       // update
-      this.items.update(this.currentItem.$key, { text: this.regForm.value.newData });
+      promise = this.items.update(this.currentItem.$key, { text: this.regForm.value.newData });
     }
     else {
       // new
-      this.items.push({ text: this.regForm.value.newData });
+      promise = this.items.push({ text: this.regForm.value.newData });
     }
-
-    this.formShowing = false;
+    promise.then(() => {
+      this.formShowing = false;
+    })
   }
 
   edit(item) {

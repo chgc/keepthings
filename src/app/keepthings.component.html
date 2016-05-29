@@ -5,6 +5,12 @@
         <md-icon md-list-icon>{{view.icon}}</md-icon> <span md-line>{{view.name}}</span>
         <span md-line class="secondary">{{view.description}}</span>
       </a>
+      <a md-list-item (click)="login(); sidenav.close()" *ngIf="!isLogin" >
+        LOGIN
+      </a>
+      <a md-list-item (click)="logout(); sidenav.close()" *ngIf="isLogin">
+        LOGOUT
+      </a>
     </md-nav-list>
   </md-sidenav>
 
@@ -17,7 +23,24 @@
     </button>
   </md-toolbar>
 
-  <div class="form" *ngIf="formShowing">
+  <div class="form" *ngIf="!isLogin">
+    <md-card>
+      <md-card-title>Login</md-card-title>
+      <form [ngFormModel]="loginForm" (ngSubmit)="login()" novalidate>
+        <md-card-content>
+          <md-input placeholder="email" type="email" ngControl="email"></md-input>
+          <md-input placeholder="passowrd" type="password" ngControl="password"></md-input>
+        </md-card-content>
+        <md-card-actions align="end">
+          <button type="submit" md-raised-button color="accent" [disabled]="!loginForm.valid">
+          LOGIN
+          </button>
+        </md-card-actions>
+      </form>
+    </md-card>
+  </div>
+
+  <div class="form" *ngIf="formShowing && isLogin">
     <md-card>
       <md-card-title>Add New Data</md-card-title>
       <form [ngFormModel]="regForm" (ngSubmit)="save()" novalidate>
@@ -32,7 +55,7 @@
     </md-card>
   </div>
 
-  <div class="card-container">
+  <div class="card-container" *ngIf="isLogin">
     <md-card *ngFor="let item of items | async">
       <md-card-title>{{item.text}}</md-card-title>
       <md-card-actions align="end">
