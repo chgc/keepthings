@@ -1,7 +1,7 @@
 <md-sidenav-layout fullscreen>
   <md-sidenav #sidenav>
     <md-nav-list>
-      <a md-list-item *ngFor="let view of views">
+      <a md-list-item *ngFor="let view of views" [routerLink]="[view.link]">
         <md-icon md-list-icon>{{view.icon}}</md-icon> <span md-line>{{view.name}}</span>
         <span md-line class="secondary">{{view.description}}</span>
       </a>
@@ -15,7 +15,7 @@
     <button md-icon-button (click)="sidenav.open()">
       <md-icon>menu</md-icon>
     </button> {{title}}
-    <button md-fab (click)="create()" *ngIf="isLogin" >
+    <button md-fab (click)="create()" *ngIf="isLogin">
       <md-icon>add</md-icon>
     </button>
   </md-toolbar>
@@ -51,6 +51,7 @@
       </form>
     </md-card>
   </div>
+  <router-outlet></router-outlet>
 
   <div class="card-container" *ngIf="isLogin">
     <md-card *ngFor="let item of items | async">

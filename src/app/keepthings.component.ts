@@ -10,8 +10,8 @@ import {MdInput} from '@angular2-material/input';
 import {MdCheckbox} from '@angular2-material/checkbox';
 import {MdRadioButton, MdRadioGroup, MdRadioDispatcher} from '@angular2-material/radio';
 import {MdIcon, MdIconRegistry} from '@angular2-material/icon';
-
-
+import { RouteConfig, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { ProfileComponent } from './+profile';
 
 @Component({
   moduleId: module.id,
@@ -29,12 +29,16 @@ import {MdIcon, MdIconRegistry} from '@angular2-material/icon';
     MdRadioGroup,
     MdRadioButton,
     MdIcon,
-    FORM_DIRECTIVES
+    FORM_DIRECTIVES,
+    ROUTER_DIRECTIVES
   ],
   providers: [
     MdIconRegistry, MdRadioDispatcher
   ]
 })
+@RouteConfig([
+  {path: '/profile', name: 'Profile', component: ProfileComponent},  
+])
 export class KeepthingsAppComponent {
   formShowing = false;
   title = 'keepthings!';
@@ -49,12 +53,14 @@ export class KeepthingsAppComponent {
     {
       name: "My Account",
       description: "Edit my account information",
-      icon: "assignment ind"
+      icon: "assignment ind",
+      link: "Profile"
     },
     {
       name: "Potential dates",
       description: "Find your soulmate!",
-      icon: "pets"
+      icon: "pets",
+      link: "Profile"
     }
   ];
   constructor(private af: AngularFire, private builder: FormBuilder) {
