@@ -6,10 +6,12 @@
         <span md-line class="secondary">{{view.description}}</span>
       </a>
       <a md-list-item (click)="fbLogin(); sidenav.close()" *ngIf="!isLogin">
-        Facebook Login
+        <md-icon md-list-icon>power_settings_new</md-icon>
+        <span md-line> Facebook Login</span>
       </a>
       <a md-list-item (click)="logout(); sidenav.close()" *ngIf="isLogin">
-        LOGOUT
+        <md-icon md-list-icon>power_settings_new</md-icon>
+        <span md-line> LOGOUT</span>
       </a>
     </md-nav-list>
   </md-sidenav>
