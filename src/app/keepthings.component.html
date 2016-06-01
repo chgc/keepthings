@@ -5,6 +5,9 @@
         <md-icon md-list-icon>{{view.icon}}</md-icon> <span md-line>{{view.name}}</span>
         <span md-line class="secondary">{{view.description}}</span>
       </a>
+      <a md-list-item (click)="fbLogin(); sidenav.close()" *ngIf="!isLogin">
+        Facebook Login
+      </a>
       <a md-list-item (click)="logout(); sidenav.close()" *ngIf="isLogin">
         LOGOUT
       </a>

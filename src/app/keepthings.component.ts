@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FORM_DIRECTIVES, ControlGroup, FormBuilder, Control, Validators } from '@angular/common';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import {MdToolbar} from '@angular2-material/toolbar';
 import {MdButton} from '@angular2-material/button';
 import {MD_SIDENAV_DIRECTIVES} from '@angular2-material/sidenav';
@@ -11,6 +10,10 @@ import {MdCheckbox} from '@angular2-material/checkbox';
 import {MdRadioButton, MdRadioGroup, MdRadioDispatcher} from '@angular2-material/radio';
 import {MdIcon, MdIconRegistry} from '@angular2-material/icon';
 import { RouteConfig, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+
+import { AngularFire, FirebaseListObservable, AuthMethods,
+  AuthProviders, } from 'angularfire2';
+
 import { ProfileComponent } from './+profile';
 
 @Component({
@@ -37,7 +40,7 @@ import { ProfileComponent } from './+profile';
   ]
 })
 @RouteConfig([
-  {path: '/profile', name: 'Profile', component: ProfileComponent},  
+  { path: '/profile', name: 'Profile', component: ProfileComponent },
 ])
 export class KeepthingsAppComponent {
   formShowing = false;
@@ -71,9 +74,30 @@ export class KeepthingsAppComponent {
 
     })
   }
+  fbLogin() {
+    this.af.auth.login()
+      .then((data) => {
+        console.log('login: ', data);
+        this.loginUser = data.uid;
+        this.items = this.af.database.list('/users/' + this.loginUser);
+        this.isLogin = true;
+        this.loginForm = this.builder.group({
+          email: new Control('', Validators.required),
+          password: new Control('', Validators.required)
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('登入失敗!');
+        this.isLogin = false;
+      });
+  }
 
   login() {
-    this.af.auth.login(this.loginForm.value)
+    this.af.auth.login(this.loginForm.value, {
+      provider: AuthProviders.Password,
+      method: AuthMethods.Password,
+    })
       .then((data) => {
         console.log('login: ', data);
         this.loginUser = data.uid;

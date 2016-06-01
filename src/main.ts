@@ -20,8 +20,9 @@ bootstrap(KeepthingsAppComponent,
     FIREBASE_PROVIDERS,
     defaultFirebase('https://keepthings.firebaseio.com'),
     firebaseAuthConfig({
-      provider: AuthProviders.Password,
-      method: AuthMethods.Password
+      provider: AuthProviders.Facebook,
+      method: AuthMethods.Popup,
+      scope: ['email']
     }),
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS
