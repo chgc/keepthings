@@ -48,6 +48,7 @@ export class KeepComponent implements OnInit {
 
   constructor(private af: AngularFire, private builder: FormBuilder, private auth: AuthService, @Host() @Inject(forwardRef(() => KeepthingsAppComponent)) main: KeepthingsAppComponent) {
     this.main = main;
+
     this.loginForm = this.builder.group({
       email: new Control('', Validators.required),
       password: new Control('', Validators.required)
@@ -61,7 +62,8 @@ export class KeepComponent implements OnInit {
   }
 
   getlist() {
-    this.items = this.af.database.list('/users/' + this.auth.currentUser.uid);
+    if (this.main.isLogin)
+      this.items = this.af.database.list('/users/' + this.auth.currentUser.uid);
   }
 
   login() {
