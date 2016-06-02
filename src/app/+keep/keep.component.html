@@ -1,0 +1,45 @@
+<button md-fab (click)="create()" *ngIf="main.isLogin">
+      <md-icon>add</md-icon>
+</button>
+
+<div class="form" *ngIf="!main.isLogin">
+  <md-card>
+    <md-card-title>Login</md-card-title>
+    <form [ngFormModel]="loginForm" (ngSubmit)="login()" novalidate>
+      <md-card-content>
+        <md-input placeholder="email" type="email" ngControl="email"></md-input>
+        <md-input placeholder="passowrd" type="password" ngControl="password"></md-input>
+      </md-card-content>
+      <md-card-actions align="end">
+        <button type="submit" md-raised-button color="accent" [disabled]="!loginForm.valid">
+          LOGIN
+          </button>
+      </md-card-actions>
+    </form>
+  </md-card>
+</div>
+
+<div class="form" *ngIf="formShowing && main.isLogin">
+  <md-card>
+    <md-card-title>Add New Data</md-card-title>
+    <form [ngFormModel]="regForm" (ngSubmit)="save()" novalidate>
+      <md-card-content>
+        <md-input placeholder="data" ngControl="newData"></md-input>
+      </md-card-content>
+      <md-card-actions align="end">
+        <button type="button" color="primary" md-raised-button (click)="formShowing=false">Cancel</button>
+        <button type="submit" md-raised-button color="accent">POST</button>
+      </md-card-actions>
+    </form>
+  </md-card>
+</div>
+
+<div class="card-container" *ngIf="main.isLogin">
+  <md-card *ngFor="let item of items | async">
+    <md-card-title>{{item.text}}</md-card-title>
+    <md-card-actions align="end">
+      <button md-button color="danger" (click)="edit(item)">Edit</button>
+      <button md-button color="danger" (click)="delete(item)">Delete</button>
+    </md-card-actions>
+  </md-card>
+</div>
