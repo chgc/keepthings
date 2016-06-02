@@ -5,10 +5,7 @@ import { HTTP_PROVIDERS } from '@angular/http';
 import { ROUTER_PROVIDERS }  from '@angular/router-deprecated';
 import {FIREBASE_PROVIDERS, 
   defaultFirebase, 
-  AngularFire, 
-  AuthMethods, 
-  AuthProviders, 
-  firebaseAuthConfig} from 'angularfire2';
+  AngularFire } from 'angularfire2';
 
 
 if (environment.production) {
@@ -18,12 +15,7 @@ if (environment.production) {
 bootstrap(KeepthingsAppComponent,
   [
     FIREBASE_PROVIDERS,
-    defaultFirebase('https://keepthings.firebaseio.com'),
-    firebaseAuthConfig({
-      provider: AuthProviders.Facebook,
-      method: AuthMethods.Popup,
-      scope: ['email']
-    }),
+    defaultFirebase('https://keepthings.firebaseio.com'),    
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS
   ]);

@@ -10,9 +10,10 @@ import {MdCheckbox} from '@angular2-material/checkbox';
 import {MdRadioButton, MdRadioGroup, MdRadioDispatcher} from '@angular2-material/radio';
 import {MdIcon, MdIconRegistry} from '@angular2-material/icon';
 import { RouteConfig, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
-
 import { AngularFire, FirebaseListObservable, AuthMethods,
-  AuthProviders, } from 'angularfire2';
+  AuthProviders } from 'angularfire2';
+
+import { AuthService } from './shared';
 
 import { ProfileComponent } from './+profile';
 
@@ -36,7 +37,9 @@ import { ProfileComponent } from './+profile';
     ROUTER_DIRECTIVES
   ],
   providers: [
-    MdIconRegistry, MdRadioDispatcher
+    MdIconRegistry,
+    MdRadioDispatcher,
+    AuthService
   ]
 })
 @RouteConfig([
@@ -49,7 +52,6 @@ export class KeepthingsAppComponent {
   loginForm: ControlGroup;
   currentItem: any;
   isLogin: boolean = false;
-  loginUser: string = '';
 
   items: FirebaseListObservable<any[]>;
   views: Object[] = [
@@ -66,7 +68,7 @@ export class KeepthingsAppComponent {
       link: "Profile"
     }
   ];
-  constructor(private af: AngularFire, private builder: FormBuilder) {
+  constructor(private af: AngularFire, private builder: FormBuilder, private auth: AuthService) {
     // 
     this.loginForm = this.builder.group({
       email: new Control('', Validators.required),
@@ -74,51 +76,57 @@ export class KeepthingsAppComponent {
 
     })
   }
+
+  ngOnInit() {
+    this.isLogin = this.auth.isLogin;
+    if (this.isLogin) {
+      this.getlist();
+    }
+  }
+
+  getlist() {
+    this.items = this.af.database.list('/users/' + this.auth.currentUser.uid);
+  }
+
   fbLogin() {
-    this.af.auth.login()
-      .then((data) => {
+    this.auth.fbLogin()
+      .subscribe((data) => {
         console.log('login: ', data);
-        this.loginUser = data.uid;
-        this.items = this.af.database.list('/users/' + this.loginUser);
-        this.isLogin = true;
+        this.getlist();
+        this.isLogin = this.auth.isLogin;
         this.loginForm = this.builder.group({
           email: new Control('', Validators.required),
           password: new Control('', Validators.required)
         });
-      })
-      .catch((err) => {
+      },
+      (err) => {
         console.log(err);
         alert('登入失敗!');
-        this.isLogin = false;
+        this.isLogin = this.auth.isLogin;
       });
   }
 
   login() {
-    this.af.auth.login(this.loginForm.value, {
-      provider: AuthProviders.Password,
-      method: AuthMethods.Password,
-    })
-      .then((data) => {
+    this.auth.login(this.loginForm.value)
+      .subscribe((data) => {
         console.log('login: ', data);
-        this.loginUser = data.uid;
-        this.items = this.af.database.list('/users/' + this.loginUser);
-        this.isLogin = true;
+        this.getlist();
+        this.isLogin = this.auth.isLogin;
         this.loginForm = this.builder.group({
           email: new Control('', Validators.required),
           password: new Control('', Validators.required)
         });
-      })
-      .catch((err) => {
+      },
+      (err) => {
         console.log(err);
         alert('登入失敗!');
-        this.isLogin = false;
+        this.isLogin = this.auth.isLogin;
       });
   }
 
   logout() {
-    this.af.auth.logout();
-    this.loginUser = "";
-    this.isLogin = false;
+    this.auth.logout();
+    this.isLogin = this.auth.isLogin;
   }
 
   create() {
