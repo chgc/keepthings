@@ -17,6 +17,7 @@ export class AuthService {
   constructor(private af: AngularFire) {
   }
 
+  /** 判斷使用者是否已經有登入 */
   get isLogin(): boolean {
     let user = localStorage.getItem('objUser');
     if (user) {
@@ -25,29 +26,31 @@ export class AuthService {
     }
     return false;
   }
+  
+  /** 用Email登入 */
   login(cred): Observable<FirebaseAuthState> {
     let ob = Observable.fromPromise(this.af.auth.login(cred, {
       provider: AuthProviders.Password,
       method: AuthMethods.Password,
     }));
-    return ob.do((data) => {
-      console.log(data);
+    return ob.do((data) => {      
       this.setUser(data);
     })
   }
 
+  /** 用Facebook登入 */
   fbLogin() {
     let ob = Observable.fromPromise(this.af.auth.login({
       provider: AuthProviders.Facebook,
       method: AuthMethods.Popup,
       scope: ['email']
     }));
-    return ob.do((data) => {
-      console.log(data);
+    return ob.do((data) => {      
       this.setUser(data);
     })
   }
-
+  
+  /** 登出 */
   logout() {
     localStorage.removeItem('objUser');
     this.currentUser = undefined;

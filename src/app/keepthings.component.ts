@@ -91,35 +91,34 @@ export class KeepthingsAppComponent {
   fbLogin() {
     this.auth.fbLogin()
       .subscribe((data) => {
-        console.log('login: ', data);
         this.getlist();
-        this.isLogin = this.auth.isLogin;
         this.loginForm = this.builder.group({
           email: new Control('', Validators.required),
           password: new Control('', Validators.required)
         });
       },
       (err) => {
-        console.log(err);
+        console.error(err);
         alert('登入失敗!');
         this.isLogin = this.auth.isLogin;
-      });
+      }, () => {        
+        this.isLogin = this.auth.isLogin;
+      });      
   }
 
   login() {
     this.auth.login(this.loginForm.value)
       .subscribe((data) => {
-        console.log('login: ', data);
         this.getlist();
-        this.isLogin = this.auth.isLogin;
         this.loginForm = this.builder.group({
           email: new Control('', Validators.required),
           password: new Control('', Validators.required)
         });
       },
       (err) => {
-        console.log(err);
+        console.error(err);
         alert('登入失敗!');
+      }, () => {        
         this.isLogin = this.auth.isLogin;
       });
   }
