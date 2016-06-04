@@ -1,4 +1,4 @@
-import { Component, OnInit, Host, forwardRef, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {MdToolbar} from '@angular2-material/toolbar';
 import {MdButton} from '@angular2-material/button';
 import {MD_SIDENAV_DIRECTIVES} from '@angular2-material/sidenav';
@@ -44,11 +44,9 @@ export class KeepComponent implements OnInit {
   loginForm: ControlGroup;
   currentItem: any;
   items: FirebaseListObservable<any[]>;
-  main: KeepthingsAppComponent;
+  isLogin: boolean;
 
-  constructor(private af: AngularFire, private builder: FormBuilder, private auth: AuthService, @Host() @Inject(forwardRef(() => KeepthingsAppComponent)) main: KeepthingsAppComponent) {
-    this.main = main;
-
+  constructor(private af: AngularFire, private builder: FormBuilder, private auth: AuthService) {
     this.loginForm = this.builder.group({
       email: new Control('', Validators.required),
       password: new Control('', Validators.required)
@@ -56,13 +54,17 @@ export class KeepComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.main.isLogin) {
+    this.auth.checkLogin.subscribe((isLogin) => {
+      this.isLogin = isLogin;
+      this.getlist();
+    })
+    if (this.isLogin) {
       this.getlist();
     }
   }
 
   getlist() {
-    if (this.main.isLogin)
+    if (this.isLogin)
       this.items = this.af.database.list('/users/' + this.auth.currentUser.uid);
   }
 
@@ -78,8 +80,6 @@ export class KeepComponent implements OnInit {
       (err) => {
         console.error(err);
         alert('登入失敗!');
-      }, () => {
-        this.main.isLogin = this.auth.isLogin;
       });
   }
 

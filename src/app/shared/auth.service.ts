@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
@@ -13,7 +13,8 @@ import {
 export class AuthService {
 
   currentUser: FirebaseAuthState;
-
+  checkLogin: EventEmitter<any> = new EventEmitter();
+  
   constructor(private af: AngularFire) {
   }
 
@@ -55,10 +56,12 @@ export class AuthService {
     localStorage.removeItem('objUser');
     this.currentUser = undefined;
     this.af.auth.logout();
+    this.checkLogin.emit(this.isLogin);
   }
 
   private setUser(user) {
     localStorage.setItem('objUser', JSON.stringify(user));
     this.currentUser = user;
+    this.checkLogin.emit(this.isLogin);
   }
 }

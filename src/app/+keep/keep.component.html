@@ -1,8 +1,8 @@
-<button md-fab (click)="create()" *ngIf="main.isLogin">
+<button md-fab (click)="create()" *ngIf="isLogin">
       <md-icon>add</md-icon>
 </button>
 
-<div class="form" *ngIf="!main.isLogin">
+<div class="form" *ngIf="!isLogin">
   <md-card>
     <md-card-title>Login</md-card-title>
     <form [ngFormModel]="loginForm" (ngSubmit)="login()" novalidate>
@@ -19,7 +19,7 @@
   </md-card>
 </div>
 
-<div class="form" *ngIf="formShowing && main.isLogin">
+<div class="form" *ngIf="formShowing && isLogin">
   <md-card>
     <md-card-title>Add New Data</md-card-title>
     <form [ngFormModel]="regForm" (ngSubmit)="save()" novalidate>
@@ -34,7 +34,7 @@
   </md-card>
 </div>
 
-<div class="card-container" *ngIf="main.isLogin">
+<div class="card-container" *ngIf="isLogin">
   <md-card *ngFor="let item of items | async">
     <md-card-title>{{item.text}}</md-card-title>
     <md-card-actions align="end">

@@ -63,7 +63,9 @@ export class KeepthingsAppComponent {
   }
 
   ngOnInit() {
-    this.isLogin = this.auth.isLogin;
+    this.auth.checkLogin.subscribe((isLogin) => {
+      this.isLogin = isLogin;
+    })
   }
 
   fbLogin() {
@@ -73,14 +75,11 @@ export class KeepthingsAppComponent {
       (err) => {
         console.error(err);
         alert('登入失敗!');
-        this.isLogin = this.auth.isLogin;
       }, () => {
-        this.isLogin = this.auth.isLogin;
       });
   }
 
   logout() {
     this.auth.logout();
-    this.isLogin = this.auth.isLogin;
   }
 }
