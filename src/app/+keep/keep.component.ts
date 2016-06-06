@@ -54,7 +54,8 @@ export class KeepComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.checkLogin.subscribe((isLogin) => {
+    this.isLogin = this.auth.isLogin;
+    this.auth.checkLogin.subscribe((isLogin) => {      
       this.isLogin = isLogin;
       this.getlist();
     })
@@ -64,8 +65,8 @@ export class KeepComponent implements OnInit {
   }
 
   getlist() {
-    if (this.isLogin)
-      this.items = this.af.database.list('/users/' + this.auth.currentUser.uid);
+    if (this.isLogin)      
+      this.items = this.af.database.list(`/users/${this.auth.currentUser.uid}`);
   }
 
   login() {
