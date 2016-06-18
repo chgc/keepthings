@@ -15,8 +15,7 @@ export class AuthService {
   currentUser: FirebaseAuthState;
   checkLogin: EventEmitter<any> = new EventEmitter();
   
-  constructor(private af: AngularFire) {
-  }
+  constructor(private af: AngularFire) {}      
 
   /** 判斷使用者是否已經有登入 */
   get isLogin(): boolean {

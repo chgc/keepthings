@@ -63,6 +63,7 @@ export class KeepthingsAppComponent {
   }
 
   ngOnInit() {
+    this.isLogin = this.auth.isLogin;
     this.auth.checkLogin.subscribe((isLogin) => {
       this.isLogin = isLogin;
     })
