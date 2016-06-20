@@ -21,8 +21,8 @@ import { ProfileComponent } from './+profile';
 @Component({
   moduleId: module.id,
   selector: 'keepthings-app',
-  templateUrl: 'app/keepthings.component.html',
-  styleUrls: ['app/keepthings.component.css'],
+  templateUrl: 'keepthings.component.html',
+  styleUrls: ['keepthings.component.css'],
   directives: [
     MD_SIDENAV_DIRECTIVES,
     MD_LIST_DIRECTIVES,

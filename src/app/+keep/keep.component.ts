@@ -16,8 +16,8 @@ import { KeepthingsAppComponent } from '../';
 @Component({
   moduleId: module.id,
   selector: 'keep',
-  templateUrl: 'app/+keep/keep.component.html',
-  styleUrls: ['app/+keep/keep.component.css'],
+  templateUrl: 'keep.component.html',
+  styleUrls: ['keep.component.css'],
   directives: [
     MD_SIDENAV_DIRECTIVES,
     MD_LIST_DIRECTIVES,
